@@ -1,14 +1,29 @@
 package main
 
 import (
+	"log"
+
+	"github.com/joho/godotenv"
 	"github.com/openyan/openyan/cmd/api"
+	"github.com/openyan/openyan/internal/utils"
 )
 
-func main() {
-	router := api.NewRouter()
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
 
-	api.Run(api.Server{
-		Port:   8080,
-		Router: router,
-	})
+func main() {
+	db := utils.ConnectToDB()
+
+	server := api.Server{
+		Port: 8080,
+		DB:   db,
+	}
+
+	router := server.NewRouter()
+
+	server.Run(router)
 }
