@@ -1,12 +1,14 @@
 package main
 
-import "net/http"
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello!"))
-}
+import (
+	"github.com/openyan/openyan/cmd/api"
+)
 
 func main() {
-	http.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":8080", nil)
+	router := api.NewRouter()
+
+	api.Run(api.Server{
+		Port:   8080,
+		Router: router,
+	})
 }

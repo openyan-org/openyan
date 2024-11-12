@@ -1,35 +1,56 @@
 package api
 
 import (
-	"log"
+	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httprate"
+	"github.com/openyan/openyan/pkg/handlers"
 )
 
-type Application struct {
-	config config
+type Server struct {
+	Port   int
+	Router *chi.Mux
 }
 
-type config struct {
-	addr string
+func mount(r *chi.Mux) *chi.Mux {
+	v1 := chi.NewRouter()
+
+	v1.Mount("/api/v1", r)
+
+	return v1
 }
 
-func (app *Application) mount() *http.ServeMux {
-	mux := http.NewServeMux()
+func NewRouter() *chi.Mux {
+	r := chi.NewRouter()
 
-	return mux
+	// Inject dependencies
+	miscHandler := handlers.NewMiscHandler()
+
+	// Register middlewares
+	r.Use(middleware.Logger)
+	r.Use(httprate.Limit(100, time.Minute))
+
+	// 404 and 405 handlers
+
+	// Register routes
+	r.NotFound(miscHandler.HealthCheck)
+	r.MethodNotAllowed(miscHandler.MethodNotAllowed)
+
+	r.Get("/health", miscHandler.HealthCheck)
+
+	// Mount router
+	v1 := mount(r)
+
+	return v1
 }
 
-func (app *Application) run(mux *http.ServeMux) error {
-	srv := &http.Server{
-		Addr:         app.config.addr,
-		Handler:      mux,
-		WriteTimeout: time.Second * 30,
-		ReadTimeout:  time.Second * 10,
-		IdleTimeout:  time.Minute,
-	}
+func Run(s Server) {
+	slog.Info(fmt.Sprintf("Server is running on http://localhost:%d", s.Port))
 
-	log.Printf("Server is listening at %s", app.config.addr)
-
-	return srv.ListenAndServe()
+	http.ListenAndServe(fmt.Sprintf(":%d", s.Port), s.Router)
 }
