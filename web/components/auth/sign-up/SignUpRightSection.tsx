@@ -21,7 +21,7 @@ export default function SignUpRightSection() {
         ></iframe>
       </div>
       <div className="flex items-center text-lg justify-center mt-6">
-        <p>See <Link href="/announcements/lighthouse-v1" className="underline hover:font-bold">everything that's new</Link></p>
+        <p>See <Link href="/announcements/lighthouse-v1" className="underline hover:font-bold">everything that&apos;s new</Link></p>
         <FaArrowRight className="ml-2" />
       </div>
     </div>
