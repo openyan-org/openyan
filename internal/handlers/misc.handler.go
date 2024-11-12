@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/openyan/openyan/pkg/utils"
+	"github.com/openyan/openyan/internal/utils"
 )
 
 type MiscHandler struct{}

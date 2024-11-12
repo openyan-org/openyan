@@ -9,7 +9,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/httprate"
-	"github.com/openyan/openyan/pkg/handlers"
+	"github.com/openyan/openyan/internal/handlers"
 )
 
 type Server struct {
@@ -17,40 +17,38 @@ type Server struct {
 	Router *chi.Mux
 }
 
-func mount(r *chi.Mux) *chi.Mux {
+func mount(mainRouter *chi.Mux, miscHandler handlers.MiscHandler) {
 	v1 := chi.NewRouter()
 
-	v1.Mount("/api/v1", r)
+	// Register middlewares specific to /api/v1
+	v1.Use(middleware.Logger)
+	v1.Use(httprate.Limit(100, time.Minute))
 
-	return v1
+	// Register routes for v1
+	v1.Get("/health", miscHandler.HealthCheck)
+	v1.NotFound(miscHandler.NotFound)
+	v1.MethodNotAllowed(miscHandler.MethodNotAllowed)
+
+	// Mount v1 router at /api/v1
+	mainRouter.Mount("/api/v1", v1)
 }
 
 func NewRouter() *chi.Mux {
-	r := chi.NewRouter()
+	mainRouter := chi.NewRouter()
 
 	// Inject dependencies
 	miscHandler := handlers.NewMiscHandler()
 
-	// Register middlewares
-	r.Use(middleware.Logger)
-	r.Use(httprate.Limit(100, time.Minute))
+	// Mount versioned routes
+	mount(mainRouter, miscHandler)
 
-	// 404 and 405 handlers
-
-	// Register routes
-	r.NotFound(miscHandler.HealthCheck)
-	r.MethodNotAllowed(miscHandler.MethodNotAllowed)
-
-	r.Get("/health", miscHandler.HealthCheck)
-
-	// Mount router
-	v1 := mount(r)
-
-	return v1
+	return mainRouter
 }
 
 func Run(s Server) {
 	slog.Info(fmt.Sprintf("Server is running on http://localhost:%d", s.Port))
 
-	http.ListenAndServe(fmt.Sprintf(":%d", s.Port), s.Router)
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", s.Port), s.Router); err != nil {
+		slog.Error("Failed to start server", "error", err)
+	}
 }
