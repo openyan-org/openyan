@@ -1,5 +1,7 @@
 dev:
-	@exec npx concurrently "air" "cd web && bun run dev:next"
+	@exec npx concurrently --names "Server,Client" --prefix-colors "bgYellow.bold,bgBlue.bold" \
+		"air" \
+		"cd web && bun run dev"
 
 test:
 	@exec go test ./...

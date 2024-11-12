@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"bun run dev:next\" \"bun run dev:go\"",
-    "dev:next": "next dev --turbopack",
-    "dev:go": "cd server && nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run cmd/api/main.go",
+    "dev": "next dev --turbopack",
     "build": "next lint && next build",
     "start": "next start",
     "lint": "next lint"
