@@ -30,8 +30,8 @@ jobs:
 
       - name: Lint code
         working-directory: ./web
-        run: bun lint
+        run: bun run lint
 
       - name: Build project
         working-directory: ./web
-        run: bun build
+        run: bun run build
