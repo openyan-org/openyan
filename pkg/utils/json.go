@@ -26,7 +26,7 @@ func ReadJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
 
 		switch {
 		case errors.As(err, &syntaxError):
-			return errors.New("malformed JSON at position " + string(syntaxError.Offset))
+			return errors.New("malformed JSON")
 		case errors.As(err, &unmarshalTypeError):
 			return errors.New("wrong type provided for field " + unmarshalTypeError.Field)
 		case errors.Is(err, io.EOF):
