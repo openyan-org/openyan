@@ -11,7 +11,7 @@ on:
       - staging
 
 jobs:
-  test:
+  build-and-test-api:
     runs-on: ubuntu-latest
 
     steps:
