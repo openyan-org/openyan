@@ -39,7 +39,7 @@ func mount(mainRouter *chi.Mux, rh RouteHandlers) {
 	v1.MethodNotAllowed(rh.miscHandler.MethodNotAllowed)
 
 	// Mount v1 router at /api/v1
-	mainRouter.Mount("/api/v1", v1)
+	mainRouter.Mount("/v1", v1)
 }
 
 func (s *Server) NewRouter() *chi.Mux {
