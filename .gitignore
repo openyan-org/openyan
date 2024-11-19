@@ -67,3 +67,5 @@ next-env.d.ts
 
 **/bin/
 **/.swc
+
+**/.idea

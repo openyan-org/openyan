@@ -15,7 +15,9 @@ func NewAuthHandler(repo repositories.UserRepository) AuthHandler {
 }
 
 // Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options
-// use RS256
+// use HS256
+// CORS
+
 
 func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	// Hash password
