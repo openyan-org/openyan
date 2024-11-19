@@ -1,4 +1,4 @@
-name: ci (web)
+name: ci (openyan.org)
 
 on:
   push:
@@ -21,19 +21,16 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: Change directory to web
-        run: cd web
-
       - name: Install dependencies
-        working-directory: ./web
+        working-directory: ./web/openyan
         run: bun install
 
       - name: Lint code
-        working-directory: ./web
+        working-directory: ./web/openyan
         run: bun run lint
 
       - name: Build project
-        working-directory: ./web
+        working-directory: ./web/openyan
         env:
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
           CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
