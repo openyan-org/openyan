@@ -1,4 +1,4 @@
-name: Deploy
+name: dash.openyan.org
 on:
   push:
     branches: master
@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write # Needed for auth with Deno Deploy
-      contents: read # Needed to clone the repository
+      id-token: write
+      contents: read
 
     steps:
       - name: Clone repository
@@ -29,9 +29,11 @@ jobs:
           node-version: lts/*
 
       - name: Install step
+        working-directory: ./web/dashboard
         run: "npm install"
 
       - name: Build step
+        working-directory: ./web/dashboard
         run: "npm run build"
 
       - name: Upload to Deno Deploy
