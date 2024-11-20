@@ -1,3 +1,5 @@
+name: openyan.org
+
 on:
   push:
     branches: 
