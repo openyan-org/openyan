@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <main>
-      <div>Hello from OpenYan Dashboard</div>
+      <div>Hello, this is OpenYan!</div>
     </main>
   );
 }
