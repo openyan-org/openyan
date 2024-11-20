@@ -1,9 +1,14 @@
-name: Deploy
 on:
   push:
-    branches: master
+    branches: 
+      - master
+    paths:
+      - 'web/'
   pull_request:
-    branches: master
+    branches:
+      - master
+    paths:
+      - 'web/'
 
 jobs:
   deploy:
@@ -29,9 +34,11 @@ jobs:
           node-version: lts/*
 
       - name: Install step
+        working-directory: ./web
         run: "npm install"
 
       - name: Build step
+        working-directory: ./web
         run: "npm run build && (cp -r public .next/standalone/public; cp -r .next/static .next/standalone/.next/static; mv .next/standalone/server.js .next/standalone/server.cjs)"
 
       - name: Upload to Deno Deploy
