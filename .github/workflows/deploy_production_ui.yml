@@ -5,12 +5,12 @@ on:
     branches: 
       - master
     paths:
-      - 'web/'
+      - 'web/**'
   pull_request:
     branches:
       - master
     paths:
-      - 'web/'
+      - 'web/**'
 
 jobs:
   deploy:
