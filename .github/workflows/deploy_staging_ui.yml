@@ -51,7 +51,7 @@ name: Build and Deploy to Cloud Run
 on:
   push:
     branches:
-      - master
+      - staging
     paths:
       - 'web/**'
 
