@@ -6,11 +6,6 @@ on:
       - master
     paths:
       - 'web/**'
-  pull_request:
-    branches:
-      - master
-    paths:
-      - 'web/**'
 
 jobs:
   deploy:

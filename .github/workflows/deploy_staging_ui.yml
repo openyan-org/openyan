@@ -6,11 +6,6 @@ on:
       - staging
     paths:
       - 'web/**'
-  pull_request:
-    branches:
-      - staging
-    paths:
-      - 'web/**'
 
 jobs:
   deploy:
