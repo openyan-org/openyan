@@ -11,15 +11,16 @@ git clone https://github.com/openyan-org openyan
 cd openyan
 ```
 
-2. Install dependencies and create a production build using Bun (you may alternatively use other JavaScript runtimes):
-
 ```
-bun install
-bun run build
+pnpm run dev
 ```
 
-3. Run the application on http://localhost:3000
+## Serving as a container
 
 ```
-bun run start
+docker build -t openyan-ui .
+```
+
+```
+docker run --name openyan-ui -d -p 3000:3000 openyan-ui
 ```
