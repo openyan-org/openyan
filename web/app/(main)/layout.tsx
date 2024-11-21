@@ -1,29 +1,15 @@
-import type { Metadata } from "next";
 import "@/app/globals.css";
-import { Roboto } from 'next/font/google'
+import Navbar from "@/components/layout/Navbar";
 
-const roboto = Roboto({
-  weight: ['500', '700'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  display: 'swap',
-})
-
-export const metadata: Metadata = {
-  title: "OpenYan",
-  description: "Free, open-source apps and tooling for students and developers.",
-};
-
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`dark ${roboto.className}`}>
-        {children}
-      </body>
-    </html>
+    <>
+      <Navbar />
+      {children}
+    </>
   );
 }
