@@ -4,8 +4,8 @@ export default function Loading() {
   return (
     <div className="flex items-center justify-center h-screen">
       <div>
-        <div className="text-4xl flex items-center justify-center">
-          <OpenYanLogo /> OpenYan
+        <div className="text-4xl font-bold flex items-center justify-center">
+          <OpenYanLogo className="mr-2" /> OpenYan
         </div>
         <div className="flex justify-center">
           <div
