@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { Separator } from "../ui/separator";
+import Badge from "../common/badge";
 
 const productUrls = {
-  "Lightship": "/lightship",
   "LazyAPI": "/lazyapi",
-  "Nexus": "/nexus",
 };
 
+const newProducts = ["LazyAPI"];
+
 const otherUrls = {
+  "Support": "/support",
   "Release Notes": "/releases",
   "Terms of Service": "/terms"
-}
+};
 
 export default function NavItems() {
   return (
@@ -23,9 +25,14 @@ export default function NavItems() {
         <Link
           key={item}
           href={url}
-          className="py-2 pl-2 rounded rounded-xl hover:bg-white hover:text-black text-lg font-medium transition duration-300"
+          className="py-2 pl-2 rounded rounded-xl hover:text-zinc-300 text-lg font-medium flex justify-between items-center"
         >
-          {item}
+          <span className="flex items-center">{item}
+            {newProducts.includes(item) && (
+              <Badge text="New" />
+            )}
+          </span>
+
         </Link>
       ))}
       <div className="ml-2 mt-8">
@@ -36,7 +43,7 @@ export default function NavItems() {
         <Link
           key={item}
           href={url}
-          className="py-2 pl-2 rounded rounded-xl hover:bg-white hover:text-black text-lg font-medium transition duration-300"
+          className="py-2 pl-2 rounded rounded-xl hover:text-zinc-300 text-lg font-medium flex justify-between items-center"
         >
           {item}
         </Link>

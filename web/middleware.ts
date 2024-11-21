@@ -5,8 +5,9 @@ interface AuthenticatedRequest extends NextRequest {
   auth?: boolean;
 }
 
+const unprotectedRoutes = ["/login", "/"];
+
 export default async function middleware(req: AuthenticatedRequest) {
-  const unprotectedRoutes = ["/login", "/"];
 
   const isAuthenticated = false;
   req.auth = isAuthenticated;
