@@ -1,38 +1,32 @@
 -- name: CreateUser :one
 
-INSERT INTO users (display_name, username, email, password_hash)
+INSERT INTO users (id, name, email, oauth_provider)
 VALUES ($1, $2, $3, $4)
 RETURNING id;
 
 -- name: GetAllUsers :many
 
-SELECT id, display_name, username, email, verified
+SELECT id, name, email, oauth_provider, is_banned
 FROM users;
 
 -- name: GetUserByID :one
 
-SELECT id, display_name, username, email, verified
+SELECT id, name, email, oauth_provider, is_banned
 FROM users
 WHERE id = $1;
 
--- name: GetUserByUsername :one
-
-SELECT id, display_name, username, email, verified
-FROM users
-WHERE username = $1;
-
 -- name: GetUserByEmail :one
 
-SELECT id, display_name, username, email, verified
+SELECT id, name, email, oauth_provider, is_banned
 FROM users
 WHERE email = $1;
 
 -- name: UpdateUserById :one
 
 UPDATE users
-SET display_name = $2, email = $3, password_hash = $4, verified = $5
+SET name = $2, email = $3, oauth_provider = $4, is_banned = $5
 WHERE id = $1
-RETURNING id, display_name, username, email, verified;
+RETURNING id, name, email, oauth_provider, is_banned;
 
 -- name: DeleteUser :exec
 
