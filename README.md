@@ -12,14 +12,14 @@ The following subsections serve as quickstart to setup development environment s
 
 Get started by cloning the repository:
 
-```
+```bash
 git clone https://github.com/openyan-org/openyan.git openyan
 cd openyan
 ```
 
 Initialise default environment secrets and start a postgres server (NOTE: Some environment secrets such as OAuth credentials require manual configuration):
 
-```
+```bash
 bash scripts/env-init.sh
 bash scripts/postgres-up.sh
 ```
@@ -28,21 +28,26 @@ bash scripts/postgres-up.sh
 
 Install dependencies for the web client:
 
-```
+```bash
 cd web
 pnpm install
 ```
 
-Finaly serve the web client in development:
+Finaly serve the web client on port 3000:
 
 ```bash
 # still in web/
 pnpm run dev
 ```
 
-Then, follow up by serving the OpenYan API server:
+Then, follow up by serving the OpenYan API server on port 8080:
 
 ```bash
-# in the root working directory
+# go to the root working directory
+cd ..
 air
 ```
+
+## License
+
+OpenYan is [MIT licensed.](https://github.com/openyan-org/openyan/blob/master/LICENSE)
