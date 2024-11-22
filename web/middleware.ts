@@ -1,31 +1,38 @@
+import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { urls } from "./lib/config";
 
-interface AuthenticatedRequest extends NextRequest {
-  auth?: boolean;
-}
+const unprotectedRoutes = [
+  urls.homePage,
+  urls.loginPage,
+  urls.termsOfServicePage,
+  urls.supportPage,
+  urls.releaseNotesPage,
+];
+const unprotectedRoutePatterns = [
+  /^\/support\/.*/,
+  /^\/releases\/.*/,
+];
 
-const unprotectedRoutes = ["/login", "/"];
+export default auth((req: any) => {
+  const isExactUnprotected = unprotectedRoutes.includes(req.nextUrl.pathname);
 
-export default async function middleware(req: AuthenticatedRequest) {
+  const matchesPattern = unprotectedRoutePatterns.some((pattern) =>
+    pattern.test(req.nextUrl.pathname)
+  );
 
-  const isAuthenticated = false;
-  req.auth = isAuthenticated;
-
-  if (unprotectedRoutes.includes(req.nextUrl.pathname)) {
+  if (isExactUnprotected || matchesPattern) {
     return NextResponse.next();
   }
 
   if (!req.auth) {
     const newUrl = new URL("/login", req.nextUrl.origin);
-    return NextResponse.redirect(newUrl);
+    return Response.redirect(newUrl);
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico).*)"
-  ],
-};
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+}

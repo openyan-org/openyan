@@ -9,7 +9,7 @@ export default function Loading() {
         </div>
         <div className="flex justify-center">
           <div
-            className="my-10 inline-block h-12 w-12 animate-spin rounded-full border-[6px] border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] text-teal-400"
+            className="my-10 inline-block h-12 w-12 animate-spin rounded-full border-[6px] border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] text-teal-300"
             role="status"
           />
         </div>

@@ -1,13 +1,17 @@
 import Hero from "@/components/landing/hero";
 import PinnedProduct from "@/components/landing/pinned-product";
-import { Button } from "@/components/ui/button";
 import Particles from "@/components/ui/particles";
-import Link from "next/link";
-import { FaArrowRight, FaBook, FaSearch } from "react-icons/fa";
+import { auth } from "@/lib/auth";
+import { urls } from "@/lib/config";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
+
+  if (session) redirect(urls.dashboardPage)
+
   return (
-    <section id="home" className="text-center mt-16 space-y-32">
+    <section id="home" className="text-center mt-16 space-y-24">
       <Hero />
       <Particles
         className="absolute inset-0"

@@ -1,6 +1,8 @@
+import Link from "next/link";
 import FadeIn from "../animation/fade-in";
 import { Button } from "../ui/button";
 import { FaArrowRight, FaGithub } from "react-icons/fa";
+import { externalUrls, urls } from "@/lib/config";
 
 export default function Hero() {
   return (
@@ -14,8 +16,12 @@ export default function Hero() {
           A catalogue of free, open-source software built to elevate your productivity.
         </p>
         <div className="flex items-center justify-center space-x-2">
-          <Button size="lg" className="text-md py-6 btn-animate bg-teal-400 hover:bg-teal-500">Get Started for Free <FaArrowRight /></Button>
-          <Button size="lg" variant="outline" className="text-md py-6 btn-animate border-zinc-700">Source <FaGithub /></Button>
+          <Link href={urls.loginPage}>
+            <Button size="lg" className="text-md py-6 btn-animate bg-teal-300 hover:bg-teal-500">Get Started for Free <FaArrowRight /></Button>
+          </Link>
+          <Link href={externalUrls.openYanGitHub} target="_blank">
+            <Button size="lg" variant="outline" className="text-md py-6 btn-animate border-zinc-700">Source <FaGithub /></Button>
+          </Link>
         </div>
       </FadeIn>
     </>
