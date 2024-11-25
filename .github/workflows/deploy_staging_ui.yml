@@ -114,12 +114,13 @@ jobs:
         working-directory: ./web
         run: |-
           docker build --build-arg AUTH_SECRET=${{ secrets.STAGING_AUTH_SECRET }} \
-                       --build-arg AUTH_GITHUB_ID=${{ secrets.STAGING_AUTH_GITHUB_ID }} \
-                       --build-arg AUTH_GITHUB_SECRET=${{ secrets.STAGING_AUTH_GITHUB_SECRET }} \
-                       --build-arg AUTH_GOOGLE_ID=${{ secrets.STAGING_AUTH_GOOGLE_ID }} \
-                       --build-arg AUTH_GOOGLE_SECRET=${{ secrets.STAGING_AUTH_GOOGLE_SECRET }} \
-                       --build-arg AUTH_TRUST_HOST=true \
-                       -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}" ./
+                 --build-arg AUTH_GITHUB_ID=${{ secrets.STAGING_AUTH_GITHUB_ID }} \
+                 --build-arg AUTH_GITHUB_SECRET=${{ secrets.STAGING_AUTH_GITHUB_SECRET }} \
+                 --build-arg AUTH_GOOGLE_ID=${{ secrets.STAGING_AUTH_GOOGLE_ID }} \
+                 --build-arg AUTH_GOOGLE_SECRET=${{ secrets.STAGING_AUTH_GOOGLE_SECRET }} \
+                 --build-arg AUTH_TRUST_HOST=true \
+                 -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}" \
+                 .  # Ensure '.' refers to the correct build context, here './web'
           docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
 
       # END - Docker auth and build
