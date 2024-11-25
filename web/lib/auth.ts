@@ -11,9 +11,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user, account }) {
       return true
     },
-    async session({ session, user }) {
-      session.user.id = user.id
-      return session
-    },
   }
 })
