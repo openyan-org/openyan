@@ -53,7 +53,7 @@ on:
     branches:
       - staging
     paths:
-#      - 'web/**'
+      - 'web/**'
 
 env:
   PROJECT_ID: openyan # TODO: update Google Cloud project id
