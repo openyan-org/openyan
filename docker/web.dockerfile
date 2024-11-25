@@ -1,1 +1,0 @@
-# Dockerfile for Next.js app

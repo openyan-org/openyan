@@ -3,8 +3,13 @@ import type { NextConfig } from "next";
 import "@/lib/env"
 
 const nextConfig: NextConfig = {
-  output: "standalone",
   /* config options here */
+  output: "standalone",
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  }
 };
 
 export default nextConfig;
