@@ -1,12 +1,12 @@
 package dtos
 
 type CreateUserRequest struct {
-	DisplayName  string `json:"display_name"`
-	Username     string `json:"username"`
-	Email        string `json:"email"`
-	PasswordHash string `json:"password_hash"`
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	Email         string `json:"email"`
+	OAuthProvider string `json:"oauth_provider"`
 }
 
 type CreateUserResponse struct {
-	UserID int32 `json:"user_id"`
+	UserID string `json:"user_id"`
 }
