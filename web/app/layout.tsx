@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import { Roboto } from 'next/font/google'
-import Navbar from "@/components/layout/Navbar";
 
 const roboto = Roboto({
-  weight: ['500', '700'],
+  weight: ['400', '500', '700'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',
@@ -23,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`dark ${roboto.className}`}>
-        {children}
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   );

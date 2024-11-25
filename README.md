@@ -1,26 +1,53 @@
 # OpenYan
 
-*Free, open-source, high-quality software for everyone.*
+OpenYan is a platform offering free and open source multi-purpose services, emphasizing on automation for students and developers.
 
-## Serving OpenYan locally
+**STATUS:** Currently a work in progress.
 
-1. Create a local copy of this repository:
+## Developer Environment Setup
 
-```
-git clone https://github.com/openyan-org openyan
+The following subsections serve as quickstart to setup development environment should you intend to make changes to and experiment with OpenYan.
+
+### Setting up local repository
+
+Get started by cloning the repository:
+
+```bash
+git clone https://github.com/openyan-org/openyan.git openyan
 cd openyan
 ```
 
+Initialise default environment secrets and start a postgres server (NOTE: Some environment secrets such as OAuth credentials require manual configuration):
+
+```bash
+bash scripts/env-init.sh
+bash scripts/postgres-up.sh
 ```
+
+### **Setting up and serving the applications**
+
+Install dependencies for the web client:
+
+```bash
+cd web
+pnpm install
+```
+
+Finaly serve the web client on port 3000:
+
+```bash
+# still in web/
 pnpm run dev
 ```
 
-## Serving as a container
+Then, follow up by serving the OpenYan API server on port 8080:
 
-```
-docker build -t openyan-ui .
+```bash
+# go to the root working directory
+cd ..
+air
 ```
 
-```
-docker run --name openyan-ui -d -p 3000:3000 openyan-ui
-```
+## License
+
+OpenYan is [MIT licensed.](https://github.com/openyan-org/openyan/blob/master/LICENSE)

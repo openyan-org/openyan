@@ -15,12 +15,12 @@ func NewUserRepository(db *database.Queries) *UserRepository {
 	return &UserRepository{db: db}
 }
 
-func (repo *UserRepository) CreateUser(ctx context.Context, req dtos.CreateUserRequest) (int32, error) {
+func (repo *UserRepository) CreateUser(ctx context.Context, req dtos.CreateUserRequest) (string, error) {
 	params := database.CreateUserParams{
-		DisplayName:  req.DisplayName,
-		Username:     req.Username,
-		Email:        req.Email,
-		PasswordHash: req.PasswordHash,
+		ID:            req.ID,
+		Name:          req.Name,
+		Email:         req.Email,
+		OauthProvider: req.OAuthProvider,
 	}
 
 	return repo.db.CreateUser(ctx, params)

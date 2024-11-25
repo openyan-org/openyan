@@ -11,26 +11,26 @@ import (
 
 const createUser = `-- name: CreateUser :one
 
-INSERT INTO users (display_name, username, email, password_hash)
+INSERT INTO users (id, name, email, oauth_provider)
 VALUES ($1, $2, $3, $4)
 RETURNING id
 `
 
 type CreateUserParams struct {
-	DisplayName  string
-	Username     string
-	Email        string
-	PasswordHash string
+	ID            string
+	Name          string
+	Email         string
+	OauthProvider string
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (int32, error) {
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (string, error) {
 	row := q.db.QueryRowContext(ctx, createUser,
-		arg.DisplayName,
-		arg.Username,
+		arg.ID,
+		arg.Name,
 		arg.Email,
-		arg.PasswordHash,
+		arg.OauthProvider,
 	)
-	var id int32
+	var id string
 	err := row.Scan(&id)
 	return id, err
 }
@@ -41,40 +41,32 @@ DELETE FROM users
 WHERE id = $1
 `
 
-func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
+func (q *Queries) DeleteUser(ctx context.Context, id string) error {
 	_, err := q.db.ExecContext(ctx, deleteUser, id)
 	return err
 }
 
 const getAllUsers = `-- name: GetAllUsers :many
 
-SELECT id, display_name, username, email, verified
+SELECT id, name, email, oauth_provider, is_banned
 FROM users
 `
 
-type GetAllUsersRow struct {
-	ID          int32
-	DisplayName string
-	Username    string
-	Email       string
-	Verified    bool
-}
-
-func (q *Queries) GetAllUsers(ctx context.Context) ([]GetAllUsersRow, error) {
+func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 	rows, err := q.db.QueryContext(ctx, getAllUsers)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetAllUsersRow
+	var items []User
 	for rows.Next() {
-		var i GetAllUsersRow
+		var i User
 		if err := rows.Scan(
 			&i.ID,
-			&i.DisplayName,
-			&i.Username,
+			&i.Name,
 			&i.Email,
-			&i.Verified,
+			&i.OauthProvider,
+			&i.IsBanned,
 		); err != nil {
 			return nil, err
 		}
@@ -91,84 +83,40 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]GetAllUsersRow, error) {
 
 const getUserByEmail = `-- name: GetUserByEmail :one
 
-SELECT id, display_name, username, email, verified
+SELECT id, name, email, oauth_provider, is_banned
 FROM users
 WHERE email = $1
 `
 
-type GetUserByEmailRow struct {
-	ID          int32
-	DisplayName string
-	Username    string
-	Email       string
-	Verified    bool
-}
-
-func (q *Queries) GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error) {
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserByEmail, email)
-	var i GetUserByEmailRow
+	var i User
 	err := row.Scan(
 		&i.ID,
-		&i.DisplayName,
-		&i.Username,
+		&i.Name,
 		&i.Email,
-		&i.Verified,
+		&i.OauthProvider,
+		&i.IsBanned,
 	)
 	return i, err
 }
 
 const getUserByID = `-- name: GetUserByID :one
 
-SELECT id, display_name, username, email, verified
+SELECT id, name, email, oauth_provider, is_banned
 FROM users
 WHERE id = $1
 `
 
-type GetUserByIDRow struct {
-	ID          int32
-	DisplayName string
-	Username    string
-	Email       string
-	Verified    bool
-}
-
-func (q *Queries) GetUserByID(ctx context.Context, id int32) (GetUserByIDRow, error) {
+func (q *Queries) GetUserByID(ctx context.Context, id string) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserByID, id)
-	var i GetUserByIDRow
+	var i User
 	err := row.Scan(
 		&i.ID,
-		&i.DisplayName,
-		&i.Username,
+		&i.Name,
 		&i.Email,
-		&i.Verified,
-	)
-	return i, err
-}
-
-const getUserByUsername = `-- name: GetUserByUsername :one
-
-SELECT id, display_name, username, email, verified
-FROM users
-WHERE username = $1
-`
-
-type GetUserByUsernameRow struct {
-	ID          int32
-	DisplayName string
-	Username    string
-	Email       string
-	Verified    bool
-}
-
-func (q *Queries) GetUserByUsername(ctx context.Context, username string) (GetUserByUsernameRow, error) {
-	row := q.db.QueryRowContext(ctx, getUserByUsername, username)
-	var i GetUserByUsernameRow
-	err := row.Scan(
-		&i.ID,
-		&i.DisplayName,
-		&i.Username,
-		&i.Email,
-		&i.Verified,
+		&i.OauthProvider,
+		&i.IsBanned,
 	)
 	return i, err
 }
@@ -176,42 +124,34 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (GetUs
 const updateUserById = `-- name: UpdateUserById :one
 
 UPDATE users
-SET display_name = $2, email = $3, password_hash = $4, verified = $5
+SET name = $2, email = $3, oauth_provider = $4, is_banned = $5
 WHERE id = $1
-RETURNING id, display_name, username, email, verified
+RETURNING id, name, email, oauth_provider, is_banned
 `
 
 type UpdateUserByIdParams struct {
-	ID           int32
-	DisplayName  string
-	Email        string
-	PasswordHash string
-	Verified     bool
+	ID            string
+	Name          string
+	Email         string
+	OauthProvider string
+	IsBanned      bool
 }
 
-type UpdateUserByIdRow struct {
-	ID          int32
-	DisplayName string
-	Username    string
-	Email       string
-	Verified    bool
-}
-
-func (q *Queries) UpdateUserById(ctx context.Context, arg UpdateUserByIdParams) (UpdateUserByIdRow, error) {
+func (q *Queries) UpdateUserById(ctx context.Context, arg UpdateUserByIdParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, updateUserById,
 		arg.ID,
-		arg.DisplayName,
+		arg.Name,
 		arg.Email,
-		arg.PasswordHash,
-		arg.Verified,
+		arg.OauthProvider,
+		arg.IsBanned,
 	)
-	var i UpdateUserByIdRow
+	var i User
 	err := row.Scan(
 		&i.ID,
-		&i.DisplayName,
-		&i.Username,
+		&i.Name,
 		&i.Email,
-		&i.Verified,
+		&i.OauthProvider,
+		&i.IsBanned,
 	)
 	return i, err
 }

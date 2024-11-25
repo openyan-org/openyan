@@ -1,5 +1,7 @@
 import "@/app/globals.css";
-import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
+import { Separator } from "@/components/ui/separator";
 
 export default function Layout({
   children,
@@ -9,7 +11,11 @@ export default function Layout({
   return (
     <>
       <Navbar />
-      {children}
+      <div className="container mx-auto px-6 py-16">
+        {children}
+      </div>
+      <Separator className="mt-12" />
+      <Footer />
     </>
   );
 }

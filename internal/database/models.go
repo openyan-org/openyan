@@ -5,10 +5,9 @@
 package database
 
 type User struct {
-	ID           int32
-	DisplayName  string
-	Username     string
-	Email        string
-	PasswordHash string
-	Verified     bool
+	ID            string
+	Name          string
+	Email         string
+	OauthProvider string
+	IsBanned      bool
 }

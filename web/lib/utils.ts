@@ -1,8 +1,10 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-// FOR SHADCN
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export function capitalize(provider: string) {
+  return provider.charAt(0).toUpperCase() + provider.slice(1);
 }
